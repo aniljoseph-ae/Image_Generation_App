@@ -1,0 +1,9 @@
+torch
+torchvision
+torchaudio
+transformers
+diffusers
+accelerate
+streamlit
+pillow
+python-dotenv
