@@ -11,11 +11,21 @@ access_token = os.getenv("HUGGINGFACE_ACCESS_TOKEN")
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 def load_text_to_image_model():
+    '''
     pipe = StableDiffusionPipeline.from_pretrained(
         "stabilityai/stable-diffusion-2",
         torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
         use_auth_token=access_token
     )
+    '''
+    
+    pipe = StableDiffusionPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-2",
+    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+    token=access_token  # Replace use_auth_token with token
+)
+
+    
     pipe.to(device)
     pipe.enable_attention_slicing()
     return pipe
