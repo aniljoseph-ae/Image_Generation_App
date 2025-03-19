@@ -1,4 +1,8 @@
 import streamlit as st
+
+
+st.set_page_config(page_title="AI Image Generator", layout="wide")
+
 from models.text_to_image import generate_image_from_text
 from models.image_to_image import generate_image_from_image
 from PIL import Image
