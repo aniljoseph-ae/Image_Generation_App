@@ -1,5 +1,6 @@
 import torch
 import os
+import streamlit as st
 from dotenv import load_dotenv
 from diffusers import StableDiffusionPipeline
 
@@ -12,23 +13,16 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 @st.cache_resource
 def load_text_to_image_model():
-    """ Load and optimize the text-to-image model. """
     pipe = StableDiffusionPipeline.from_pretrained(
-        "CompVis/stable-diffusion-v1-4",  # Smaller & Faster model
+        "stabilityai/stable-diffusion-2",
         torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-        token=access_token
+        token=access_token  # Fix auth token usage
     )
     pipe.to(device)
-    
-    # Optimizations
-    pipe.enable_attention_slicing()  # Reduce memory usage
-    if device == "cuda":
-        pipe.unet = torch.compile(pipe.unet)  # Speed-up with torch.compile()
-
+    pipe.enable_attention_slicing()  # Optimizes VRAM usage
     return pipe
 
 text_to_image_pipeline = load_text_to_image_model()
 
 def generate_image_from_text(prompt):
-    """ Generate an image from text prompt. """
-    return text_to_image_pipeline(prompt, num_inference_steps=30, guidance_scale=7.5).images[0]
+    return text_to_image_pipeline(prompt).images[0]
