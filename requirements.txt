@@ -7,3 +7,4 @@ accelerate
 streamlit
 pillow
 python-dotenv
+nest_asyncio
