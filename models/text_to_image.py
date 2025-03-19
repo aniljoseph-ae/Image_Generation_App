@@ -4,8 +4,13 @@ from dotenv import load_dotenv
 from diffusers import StableDiffusionPipeline
 
 # Load API Key
-load_dotenv()
-access_token = os.getenv("HUGGINGFACE_ACCESS_TOKEN")
+# load_dotenv()
+# access_token = os.getenv("HUGGINGFACE_ACCESS_TOKEN")
+
+access_token = os.getenv("HUGGINGFACE_ACCESS_TOKEN", "").strip()
+if not access_token:
+    raise ValueError("HUGGINGFACE_ACCESS_TOKEN is missing! Please set it as an environment variable.")
+
 
 # Check if GPU is available
 device = "cuda" if torch.cuda.is_available() else "cpu"
